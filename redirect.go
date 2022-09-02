@@ -1,4 +1,4 @@
-package DisGOAuth
+package disgoauth
 
 // Import net/http package
 import "net/http"

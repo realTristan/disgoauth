@@ -1,4 +1,4 @@
-package DisGOAuth
+package disgoauth
 
 // Import fmt package
 import "fmt"

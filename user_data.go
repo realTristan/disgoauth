@@ -1,4 +1,4 @@
-package DisGOAuth
+package disgoauth
 
 // Import Packages
 import (

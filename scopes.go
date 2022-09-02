@@ -1,4 +1,4 @@
-package DisGOAuth
+package disgoauth
 
 // Constant OAuth URL Scopes
 const (
