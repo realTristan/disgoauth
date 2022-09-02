@@ -3,10 +3,10 @@ package DisGOAuth
 // Import fmt package
 import "fmt"
 
-// The ImplicitOAuth() function uses the implicit
+// The implicitOAuth() function uses the implicit
 // and less-safe response type for getting the
 // users access token
-func (dc *DiscordClient) ImplicitOAuth() {
+func (dc *DiscordClient) implicitOAuth() {
 	// Set the OAuth URL to a formatted string
 	// that contains the client id, redirect uri,
 	// and response type.
@@ -17,9 +17,9 @@ func (dc *DiscordClient) ImplicitOAuth() {
 	)
 }
 
-// The NonImplicitOAuth() function uses the default and
+// The nonImplicitOAuth() function uses the default and
 // safer response type for getting the users access token
-func (dc *DiscordClient) NonImplicitOAuth() {
+func (dc *DiscordClient) nonImplicitOAuth() {
 	// Establish the prompt parameter
 	var prompt string = dc.Prompt
 	if len(dc.Prompt) < 1 {

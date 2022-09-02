@@ -54,9 +54,9 @@ func (dc *DiscordClient) AppendScopes() {
 // no previously provided OAuth URL.
 func (dc *DiscordClient) InitOAuthURL() {
 	if dc.Implicit {
-		dc.ImplicitOAuth() // implicit.go
+		dc.implicitOAuth() // implicit.go
 	} else {
-		dc.NonImplicitOAuth() // implicit.go
+		dc.nonImplicitOAuth() // implicit.go
 	}
 	// Append the scopes to the OAuth URL
 	dc.AppendScopes() // discord_client.go (this file)
