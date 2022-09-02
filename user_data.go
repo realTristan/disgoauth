@@ -51,5 +51,5 @@ func GetUserData(token string) (map[string]interface{}, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 		return map[string]interface{}{}, err
 	}
-	return data, err
+	return data, nil
 }

@@ -112,7 +112,7 @@ func (dc *DiscordClient) accessTokenRequest(req *http.Request) (map[string]inter
 	if err := json.NewDecoder(resp.Body).Decode(&data); err != nil {
 		return map[string]interface{}{}, err
 	}
-	return data, err
+	return data, nil
 }
 
 /////////////////////////////////////////
