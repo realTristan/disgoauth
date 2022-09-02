@@ -46,7 +46,6 @@ func main() {
 	//
 	////////////////////////////////////////////////////////////////////////
 	http.HandleFunc("/redirect", func(w http.ResponseWriter, r *http.Request) {
-		// Put this in the handler of the dc.RedirectURI
 		// Define Variables
 		var (
 			// Get the code from the redirect parameters (&code=...)
