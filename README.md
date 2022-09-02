@@ -3,9 +3,10 @@
 
 Discord OAuth2.0 Implementation for Go 
 
-# About
+# Why DisGOAuth?
 - DisGOAuth is a light-weight, fast and easy-to-use module that makes using Discord's OAuth2.0 much easier. 
 - DisGOAuth uses solely native golang packages which makes it fast and secure.
+- DisGOAuth provides functions for all of the oauth endpoints
 
 # Installation
 `go get -u github.com/realTristan/disgoauth`
