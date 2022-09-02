@@ -50,11 +50,11 @@ func CredentialsAccessTokenBody(scopes []string) *bytes.Buffer {
 	return bytes.NewBuffer([]byte(_url))
 }
 
-// The _GetAccessToken() function is used to send an api
+// The _AccessTokenRequest() function is used to send an api
 // request to discord's oauth2/token endpoint.
 // The function returns the data required for
 // accessing the authorized users data
-func (dc *DiscordClient) _GetAccessToken(body *bytes.Buffer, creds bool) map[string]interface{} {
+func (dc *DiscordClient) _AccessTokenRequest(body *bytes.Buffer, creds bool) map[string]interface{} {
 	// Establish a new request object
 	var req, _ = http.NewRequest("POST",
 		"https://discordapp.com/api/oauth2/token",
@@ -98,7 +98,7 @@ func (dc *DiscordClient) _GetAccessToken(body *bytes.Buffer, creds bool) map[str
 // bearer authorization token.
 func (dc *DiscordClient) GetAccessToken(code string) string {
 	// Send http request to get token data
-	var data map[string]interface{} = dc._GetAccessToken(dc.AccessTokenBody(code), false)
+	var data map[string]interface{} = dc._AccessTokenRequest(dc.AccessTokenBody(code), false)
 	// Return the bearer token from said data
 	return data["token_type"].(string) + " " + data["access_token"].(string)
 }
@@ -110,7 +110,7 @@ func (dc *DiscordClient) GetAccessToken(code string) string {
 // The GetAccessTokenData() function is used to return all
 // the map data revolving around getting the access token
 func (dc *DiscordClient) GetAccessTokenData(code string) map[string]interface{} {
-	return dc._GetAccessToken(dc.AccessTokenBody(code), false)
+	return dc._AccessTokenRequest(dc.AccessTokenBody(code), false)
 }
 
 /////////////////////////////////////////
@@ -120,7 +120,7 @@ func (dc *DiscordClient) GetAccessTokenData(code string) map[string]interface{} 
 // The RefreshAccessToken() function is used to refresh
 // the users bearer authorization token.
 func (dc *DiscordClient) RefreshAccessToken(refreshToken string) map[string]interface{} {
-	return dc._GetAccessToken(dc.RefreshAccessTokenBody(refreshToken), false)
+	return dc._AccessTokenRequest(dc.RefreshAccessTokenBody(refreshToken), false)
 }
 
 /////////////////////////////////////////
@@ -131,7 +131,7 @@ func (dc *DiscordClient) RefreshAccessToken(refreshToken string) map[string]inte
 // the users credentials access bearer auth token.
 func (dc *DiscordClient) GetCredentialsAccessToken(scopes []string) string {
 	// Send http request to get token data
-	var data map[string]interface{} = dc._GetAccessToken(CredentialsAccessTokenBody(scopes), true)
+	var data map[string]interface{} = dc._AccessTokenRequest(CredentialsAccessTokenBody(scopes), true)
 	// Return the bearer token from said data
 	return data["token_type"].(string) + " " + data["access_token"].(string)
 }
@@ -144,5 +144,5 @@ func (dc *DiscordClient) GetCredentialsAccessToken(scopes []string) string {
 // is used to return all the map data revolving
 // around getting the credentials access token
 func (dc *DiscordClient) GetCredentialsAccessTokenData(scopes []string) map[string]interface{} {
-	return dc._GetAccessToken(CredentialsAccessTokenBody(scopes), true)
+	return dc._AccessTokenRequest(CredentialsAccessTokenBody(scopes), true)
 }
