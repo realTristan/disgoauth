@@ -1,9 +1,7 @@
 package DisGOAuth
 
-// Import Packages
-import (
-	"net/http"
-)
+// Import net/http
+import "net/http"
 
 // Request Client for sending http requests
 var RequestClient *http.Client = &http.Client{}
@@ -28,10 +26,10 @@ type DiscordClient struct {
 	Implicit           bool
 }
 
-// The CheckStructErrors() function is used to check for
+// The checkStructErrors() function is used to check for
 // any invalid / empty struct values that are required
 // for the discord oauth to work.
-func (dc *DiscordClient) CheckStructErrors() {
+func (dc *DiscordClient) checkStructErrors() {
 	// Make sure the user has provided
 	// a valid client id
 	if len(dc.ClientID) < 1 {
@@ -54,44 +52,47 @@ func (dc *DiscordClient) CheckStructErrors() {
 	}
 }
 
-// The AppendScopes() function is used to append
+// The appendScopes() function is used to append
 // the provided scopes to the OAuth URL. This function
 // is called from the InitOAuthURL() function and is
 // only ran if the number of provided scopes is valid.
-func (dc *DiscordClient) AppendScopes() {
+func (dc *DiscordClient) appendScopes(url string) string {
 	// Append the initial parameter name (scope)
-	dc.OAuthURL += "&scope="
+	url += "&scope="
 
 	// For each of the discord client's scopes
 	for i := 0; i < len(dc.Scopes); i++ {
 		// Append the scope to the OAuth URL
-		dc.OAuthURL += dc.Scopes[i]
+		url += dc.Scopes[i]
 
 		// If there are multiple scopes and the
 		// current index isn't the last scope
 		if i != len(dc.Scopes) {
 			// Append %20 (space)
-			dc.OAuthURL += "%20"
+			url += "%20"
 		}
 	}
-
+	return url
 }
 
-// The InitOAuthURL() function is used to initialize
+// The initOAuthURL() function is used to initialize
 // a discord OAuth URL. This function is called from
 // the Init() function and is only ran if there is
 // no previously provided OAuth URL.
-func (dc *DiscordClient) InitOAuthURL() {
+func (dc *DiscordClient) initOAuthURL() string {
+	// Non Implicit OAuth
+	var tempUrl string = dc.nonImplicitOAuth() // implicit.go
+
+	// Implicit OAuth
 	if dc.Implicit {
-		dc.implicitOAuth() // implicit.go
-	} else {
-		dc.nonImplicitOAuth() // implicit.go
+		tempUrl = dc.implicitOAuth() // implicit.go
 	}
 	// If user provided scopes
 	if len(dc.Scopes) > 0 {
 		// Append the scopes to the OAuth URL
-		dc.AppendScopes() // discord_client.go (this file)
+		tempUrl = dc.appendScopes(tempUrl) // discord_client.go (this file)
 	}
+	return tempUrl
 }
 
 // The Init() function is used to initalize
@@ -100,11 +101,11 @@ func (dc *DiscordClient) InitOAuthURL() {
 // the provided DiscordClient struct
 func Init(dc *DiscordClient) *DiscordClient {
 	// Check for DiscordClient struct errors
-	dc.CheckStructErrors() // discord_client.go (this file)
+	dc.checkStructErrors() // discord_client.go (this file)
 
 	// Initialize the OAuth URL
 	if len(dc.OAuthURL) < 40 {
-		dc.InitOAuthURL() // discord_client.go (this file)
+		dc.OAuthURL = dc.initOAuthURL() // discord_client.go (this file)
 	}
 	// Return the discord client
 	return dc
