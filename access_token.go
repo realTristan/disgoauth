@@ -128,24 +128,24 @@ func (dc *DiscordClient) GetAccessToken(code string) (string, string, int, error
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = dc.accessTokenBody(code)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, false)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, false)
 	)
 	// Handle the token request object error
-	if _err != nil {
-		return "", "", -1, _err
-	}
-	// Get the token data map
-	var data, err = dc.accessTokenRequest(tokenReq)
-
-	// Handle the error
 	if err != nil {
 		return "", "", -1, err
+	}
+	// Get the token data map
+	var data, _err = dc.accessTokenRequest(tokenReq)
+
+	// Handle the token request error
+	if _err != nil {
+		return "", "", -1, _err
 	}
 	// The Bearer access token
 	var accessToken string = data["token_type"].(string) + " " + data["access_token"].(string)
 
 	// Return the bearer token from said data
-	return accessToken, data["refresh_token"].(string), data["expires_in"].(int), err
+	return accessToken, data["refresh_token"].(string), data["expires_in"].(int), nil
 }
 
 /////////////////////////////////////////
@@ -160,24 +160,24 @@ func (dc *DiscordClient) GetOnlyAccessToken(code string) (string, error) {
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = dc.accessTokenBody(code)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, false)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, false)
 	)
 	// Handle the token request object error
-	if _err != nil {
-		return "", _err
-	}
-	// Get the token data map
-	var data, err = dc.accessTokenRequest(tokenReq)
-
-	// Handle the error
 	if err != nil {
 		return "", err
+	}
+	// Get the token data map
+	var data, _err = dc.accessTokenRequest(tokenReq)
+
+	// Handle the token request error
+	if _err != nil {
+		return "", _err
 	}
 	// The Bearer access token
 	var accessToken string = data["token_type"].(string) + " " + data["access_token"].(string)
 
 	// Return the bearer token from said data
-	return accessToken, err
+	return accessToken, nil
 }
 
 /////////////////////////////////////////
@@ -192,11 +192,11 @@ func (dc *DiscordClient) GetAccessTokenMap(code string) (map[string]interface{},
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = dc.accessTokenBody(code)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, false)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, false)
 	)
 	// Handle the token request object error
-	if _err != nil {
-		return map[string]interface{}{}, _err
+	if err != nil {
+		return map[string]interface{}{}, err
 	}
 	return dc.accessTokenRequest(tokenReq)
 }
@@ -213,11 +213,11 @@ func (dc *DiscordClient) RefreshAccessToken(refreshToken string) (map[string]int
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = dc.refreshAccessTokenBody(refreshToken)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, false)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, false)
 	)
 	// Handle the token request object error
-	if _err != nil {
-		return map[string]interface{}{}, _err
+	if err != nil {
+		return map[string]interface{}{}, err
 	}
 	return dc.accessTokenRequest(tokenReq)
 }
@@ -235,24 +235,24 @@ func (dc *DiscordClient) GetCredentialsAccessToken(scopes []string) (string, str
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = credentialsAccessTokenBody(scopes)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, true)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, true)
 	)
-	// Handle the error
-	if _err != nil {
-		return "", "", -1, _err
-	}
-	// Send http request to get token data
-	var data, err = dc.accessTokenRequest(tokenReq)
-
 	// Handle the error
 	if err != nil {
 		return "", "", -1, err
+	}
+	// Send http request to get token data
+	var data, _err = dc.accessTokenRequest(tokenReq)
+
+	// Handle the token request error
+	if _err != nil {
+		return "", "", -1, _err
 	}
 	// The Bearer access token
 	var accessToken string = data["token_type"].(string) + " " + data["access_token"].(string)
 
 	// Return the bearer token from said data
-	return accessToken, data["refresh_token"].(string), data["expires_in"].(int), err
+	return accessToken, data["refresh_token"].(string), data["expires_in"].(int), nil
 }
 
 /////////////////////////////////////////
@@ -267,25 +267,25 @@ func (dc *DiscordClient) GetOnlyCredentialsAccessToken(scopes []string) (string,
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = credentialsAccessTokenBody(scopes)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, true)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, true)
 	)
-	// Handle the error
-	if _err != nil {
-		return "", _err
-	}
-
-	// Send http request to get token data
-	var data, err = dc.accessTokenRequest(tokenReq)
-
 	// Handle the error
 	if err != nil {
 		return "", err
+	}
+
+	// Send http request to get token data
+	var data, _err = dc.accessTokenRequest(tokenReq)
+
+	// Handle the error
+	if _err != nil {
+		return "", _err
 	}
 	// The Bearer access token
 	var accessToken string = data["token_type"].(string) + " " + data["access_token"].(string)
 
 	// Return the bearer token from said data
-	return accessToken, err
+	return accessToken, nil
 }
 
 /////////////////////////////////////////
@@ -301,11 +301,11 @@ func (dc *DiscordClient) GetCredentialsAccessTokenMap(scopes []string) (map[stri
 		// The Access Token Request Body
 		tokenBody *bytes.Buffer = credentialsAccessTokenBody(scopes)
 		// The Access Token Request Object
-		tokenReq, _err = dc.accessTokenRequestObject(tokenBody, true)
+		tokenReq, err = dc.accessTokenRequestObject(tokenBody, true)
 	)
 	// Handle the token request object error
-	if _err != nil {
-		return map[string]interface{}{}, _err
+	if err != nil {
+		return map[string]interface{}{}, err
 	}
 	return dc.accessTokenRequest(tokenReq)
 }
