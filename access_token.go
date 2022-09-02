@@ -292,10 +292,10 @@ func (dc *DiscordClient) GetOnlyCredentialsAccessToken(scopes []string) (string,
 // Get Credentials Access Token + Data
 /////////////////////////////////////////
 
-// The GetCredentialsAccessTokenData() function
+// The GetCredentialsAccessTokenMap() function
 // is used to return all the map data revolving
 // around the credentials access token
-func (dc *DiscordClient) GetCredentialsAccessTokenData(scopes []string) (map[string]interface{}, error) {
+func (dc *DiscordClient) GetCredentialsAccessTokenMap(scopes []string) (map[string]interface{}, error) {
 	// Define Variables
 	var (
 		// The Access Token Request Body
