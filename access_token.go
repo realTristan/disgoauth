@@ -29,7 +29,7 @@ func (dc *DiscordClient) GetAccessToken(code string) string {
 	// Establish a new request object
 	var req, _ = http.NewRequest("POST",
 		"https://discordapp.com/api/oauth2/token",
-		dc.GetAccessTokenBody(code),
+		dc.GetAccessTokenBody(code), // access_token.go (this file)
 	)
 	// Set the request object's headers
 	req.Header = http.Header{

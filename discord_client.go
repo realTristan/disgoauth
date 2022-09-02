@@ -2,7 +2,6 @@ package DisGOAuth
 
 // Import Packages
 import (
-	"fmt"
 	"net/http"
 )
 
@@ -10,10 +9,12 @@ import (
 var RequestClient *http.Client = &http.Client{}
 
 // The DiscordClient struct contains five primary keys
-/* ClientID: 	string 	 { "Your Application's Client ID" } */
-/* ClientSecret: 	string 	 { "Your Application's Client Secret" } */
+/* ClientID: 	string 	 { "Your Application's Client ID (REQUIRED)" } */
+/* ClientSecret: 	string 	 { "Your Application's Client Secret (REQUIRED)" } */
 /* Scopes: 	[]string { "Your Application's Permission Scopes (REQUIRED)" } */
-/* RedirectURI: 	string 	 { "The Redirect URI (This is where you use the GetUserData functions)" } */
+/* Prompt: 	string 	 { "The Consent Prompt Parameter for Auth Reapproval" } */
+/* Implicit: 	bool 	 { "Whether to Use Discord's Implicit Endpoint For Getting Access Token" } */
+/* RedirectURI: 	string 	 { "The Redirect URI (This is where you use the GetUserData functions) (REQUIRED)" } */
 /* OAuthURL: 	string 	 { "Your Application's OAuth URL (If none is provided, one will be generated for you)" } */
 type DiscordClient struct {
 	ClientID     string
@@ -21,6 +22,8 @@ type DiscordClient struct {
 	RedirectURI  string
 	Scopes       []string
 	OAuthURL     string
+	Prompt       string
+	Implicit     bool
 }
 
 // The AppendScopes() function is used to append
@@ -50,16 +53,13 @@ func (dc *DiscordClient) AppendScopes() {
 // the Init() function and is only ran if there is
 // no previously provided OAuth URL.
 func (dc *DiscordClient) InitOAuthURL() {
-	// Set the OAuth URL to a formatted string
-	// that contains the client id, redirect uri,
-	// and response type.
-	dc.OAuthURL = fmt.Sprintf(
-		"https://discord.com/api/oauth2/authorize?client_id=%s&redirect_uri=%s&response_type=code&prompt=consent",
-		dc.ClientID,
-		dc.RedirectURI,
-	)
+	if dc.Implicit {
+		dc.ImplicitOAuth() // implicit.go
+	} else {
+		dc.NonImplicitOAuth() // implicit.go
+	}
 	// Append the scopes to the OAuth URL
-	dc.AppendScopes()
+	dc.AppendScopes() // discord_client.go (this file)
 }
 
 // The CheckStructErrors() function is used to check for
@@ -94,11 +94,11 @@ func (dc *DiscordClient) CheckStructErrors() {
 // the provided DiscordClient struct
 func Init(dc *DiscordClient) *DiscordClient {
 	// Check for DiscordClient struct errors
-	dc.CheckStructErrors()
+	dc.CheckStructErrors() // discord_client.go (this file)
 
 	// Initialize the OAuth URL
 	if len(dc.OAuthURL) < 40 {
-		dc.InitOAuthURL()
+		dc.InitOAuthURL() // discord_client.go (this file)
 	}
 	// Return the discord client
 	return dc
