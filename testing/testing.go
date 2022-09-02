@@ -30,7 +30,11 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// Send the user to the discord authentication
 		// website. This is where they authorize access.
-		dc.RedirectHandler(w, r, "")
+		//
+		// The third parameter in the RedirectHandler is the
+		// state. If you're storing a state, PLEASE base64 encode
+		// it beforehand!
+		dc.RedirectHandler(w, r, "") // w: http.ResponseWriter, r: *http.Request, state: string
 	})
 
 	////////////////////////////////////////////////////////////////////////
