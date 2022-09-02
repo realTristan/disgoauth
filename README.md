@@ -31,7 +31,7 @@ func main() {
 	var dc *discord.DiscordClient = discord.Init(&discord.DiscordClient{
 		ClientID:     "CLIENT ID",
 		ClientSecret: "CLIENT SECRET",
-		RedirectURI:  "localhost:8000/redirect",
+		RedirectURI:  "http://localhost:8000/redirect",
 		Scopes:       []string{discord.ScopeIdentify},
 	})
 

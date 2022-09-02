@@ -1,7 +1,9 @@
 package disgoauth
 
 // Import net/http
-import "net/http"
+import (
+	"net/http"
+)
 
 // Request Client for sending http requests
 var RequestClient *http.Client = &http.Client{}
@@ -56,23 +58,26 @@ func (dc *DiscordClient) checkStructErrors() {
 // the provided scopes to the OAuth URL. This function
 // is called from the InitOAuthURL() function and is
 // only ran if the number of provided scopes is valid.
-func (dc *DiscordClient) appendScopes(url string) string {
+//
+// Using append() and a byte slice is much faster than
+// using += to a string!
+func (dc *DiscordClient) appendScopes(url []byte) string {
 	// Append the initial parameter name (scope)
-	url += "&scope="
+	url = append(url, "&scope="...)
 
 	// For each of the discord client's scopes
 	for i := 0; i < len(dc.Scopes); i++ {
 		// Append the scope to the OAuth URL
-		url += dc.Scopes[i]
+		url = append(url, dc.Scopes[i]...)
 
 		// If there are multiple scopes and the
 		// current index isn't the last scope
-		if i != len(dc.Scopes) {
+		if i != len(dc.Scopes)-1 {
 			// Append %20 (space)
-			url += "%20"
+			url = append(url, "%20"...)
 		}
 	}
-	return url
+	return string(url)
 }
 
 // The initOAuthURL() function is used to initialize
@@ -90,7 +95,7 @@ func (dc *DiscordClient) initOAuthURL() string {
 	// If user provided scopes
 	if len(dc.Scopes) > 0 {
 		// Append the scopes to the OAuth URL
-		tempUrl = dc.appendScopes(tempUrl) // discord_client.go (this file)
+		tempUrl = dc.appendScopes([]byte(tempUrl)) // discord_client.go (this file)
 	}
 	return tempUrl
 }

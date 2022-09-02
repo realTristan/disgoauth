@@ -13,9 +13,9 @@ import (
 func main() {
 	// Establish a new discord client
 	var dc *discord.DiscordClient = discord.Init(&discord.DiscordClient{
-		ClientID:     "CLIENT ID",
-		ClientSecret: "CLIENT SECRET",
-		RedirectURI:  "localhost:8000/redirect",
+		ClientID:     "883006609280864257",
+		ClientSecret: "X-9n0rEBywVu1KKKOQSHskRQM7L8UlOV",
+		RedirectURI:  "http://localhost:8000/redirect",
 		Scopes:       []string{discord.ScopeIdentify},
 	})
 
@@ -58,7 +58,7 @@ func main() {
 			userData, _ = discord.GetUserData(accessToken)
 		)
 		// Print the user data map
-		fmt.Println(userData)
+		fmt.Fprint(w, userData)
 	})
 
 	// Listen and Serve to the incoming http requests

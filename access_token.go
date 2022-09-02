@@ -33,22 +33,32 @@ func (dc *DiscordClient) refreshAccessTokenBody(refreshToken string) *bytes.Buff
 // The credentialsAccessTokenBody() function is used to return
 // the request body bytes being used in the
 // GetCredentialsAccessToken() function
+//
+// Using append() and a byte slice is much faster than
+// using += to a string!
 func credentialsAccessTokenBody(scopes []string) *bytes.Buffer {
-	var _url string = "grant_type=client_credentials&scope="
-	// For each of the scopes
-	for i := 0; i < len(scopes); i++ {
-		// Append the scope to the url
-		_url += scopes[i]
+	var body []byte = []byte("grant_type=client_credentials")
 
-		// If there are multiple scopes and the
-		// current index isn't the last scope
-		if i != len(scopes) {
-			// Append %20 (space)
-			_url += "%20"
+	// Check to make sure the user provided a
+	// valid amount of scopes
+	if len(scopes) > 0 {
+		body = append(body, "&scope="...)
+
+		// For each of the scopes
+		for i := 0; i < len(scopes); i++ {
+			// Append the scope to the url
+			body = append(body, scopes[i]...)
+
+			// If there are multiple scopes and the
+			// current index isn't the last scope
+			if i != len(scopes)+1 {
+				// Append %20 (space)
+				body = append(body, "%20"...)
+			}
 		}
 	}
 	// Return the url bytes
-	return bytes.NewBuffer([]byte(_url))
+	return bytes.NewBuffer(body)
 }
 
 // The accessTokenRequestObject() function is used to establish
