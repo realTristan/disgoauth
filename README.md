@@ -8,7 +8,7 @@ Discord OAuth2.0 Implementation for Go
 - DisGOAuth uses solely native golang packages which makes it fast and secure.
 
 # Installation
-`go get -u github.com/realTristan/DisGOAuth`
+`go get -u github.com/realTristan/disgoauth`
 
 # Quick Usage
 ```go
@@ -21,7 +21,7 @@ import (
 	"net/http"
 
 	// Import DisGOAuth
-	discord "github.com/realTristan/DisGOAuth"
+	discord "github.com/realTristan/disgoauth"
 )
 
 // Main function
