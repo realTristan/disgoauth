@@ -54,10 +54,10 @@ func main() {
 			codeFromURLParamaters = r.URL.Query()["code"][0]
 
 			// Get the access token using the above codeFromURLParamaters
-			accessToken string = dc.GetAccessToken(codeFromURLParamaters)
+			accessToken, _ = dc.GetOnlyAccessToken(codeFromURLParamaters)
 
 			// Get the authorized user's data using the above accessToken
-			userData map[string]interface{} = discord.GetUserData(accessToken)
+			userData, _ = discord.GetUserData(accessToken)
 		)
 		// Print the user data map
 		fmt.Println(userData)
