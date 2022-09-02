@@ -13,53 +13,19 @@ var RequestClient *http.Client = &http.Client{}
 /* ClientSecret: 	string 	 { "Your Application's Client Secret (REQUIRED)" } */
 /* Scopes: 	[]string { "Your Application's Permission Scopes (REQUIRED)" } */
 /* Prompt: 	string 	 { "The Consent Prompt Parameter for Auth Reapproval" } */
+/* RefreshRedirectURI: 	string	 { "The Redirect URI For Token Refreshing" } */
 /* Implicit: 	bool 	 { "Whether to Use Discord's Implicit Endpoint For Getting Access Token" } */
 /* RedirectURI: 	string 	 { "The Redirect URI (This is where you use the GetUserData functions) (REQUIRED)" } */
 /* OAuthURL: 	string 	 { "Your Application's OAuth URL (If none is provided, one will be generated for you)" } */
 type DiscordClient struct {
-	ClientID     string
-	ClientSecret string
-	RedirectURI  string
-	Scopes       []string
-	OAuthURL     string
-	Prompt       string
-	Implicit     bool
-}
-
-// The AppendScopes() function is used to append
-// the provided scopes to the OAuth URL. This function
-// is called from the InitOAuthURL() function and is
-// only ran if the number of provided scopes is valid.
-func (dc *DiscordClient) AppendScopes() {
-	// Append the initial parameter name (scope)
-	dc.OAuthURL += "&scope="
-
-	// For each of the discord client's scopes
-	for i := 0; i < len(dc.Scopes); i++ {
-		// Append the scope to the OAuth URL
-		dc.OAuthURL += dc.Scopes[i]
-
-		// If there are multiple scopes and the
-		// current index isn't the last scope
-		if i != len(dc.Scopes) {
-			// Append %20 (space)
-			dc.OAuthURL += "%20"
-		}
-	}
-}
-
-// The InitOAuthURL() function is used to initialize
-// a discord OAuth URL. This function is called from
-// the Init() function and is only ran if there is
-// no previously provided OAuth URL.
-func (dc *DiscordClient) InitOAuthURL() {
-	if dc.Implicit {
-		dc.implicitOAuth() // implicit.go
-	} else {
-		dc.nonImplicitOAuth() // implicit.go
-	}
-	// Append the scopes to the OAuth URL
-	dc.AppendScopes() // discord_client.go (this file)
+	ClientID           string
+	ClientSecret       string
+	RedirectURI        string
+	RefreshRedirectURI string
+	Scopes             []string
+	OAuthURL           string
+	Prompt             string
+	Implicit           bool
 }
 
 // The CheckStructErrors() function is used to check for
@@ -85,6 +51,46 @@ func (dc *DiscordClient) CheckStructErrors() {
 	// a sufficient number of scopes
 	if len(dc.Scopes) < 1 {
 		panic("DisGOAuth Error: not enough scopes in DiscordClient (Scopes: []string)")
+	}
+}
+
+// The AppendScopes() function is used to append
+// the provided scopes to the OAuth URL. This function
+// is called from the InitOAuthURL() function and is
+// only ran if the number of provided scopes is valid.
+func (dc *DiscordClient) AppendScopes() {
+	// Append the initial parameter name (scope)
+	dc.OAuthURL += "&scope="
+
+	// For each of the discord client's scopes
+	for i := 0; i < len(dc.Scopes); i++ {
+		// Append the scope to the OAuth URL
+		dc.OAuthURL += dc.Scopes[i]
+
+		// If there are multiple scopes and the
+		// current index isn't the last scope
+		if i != len(dc.Scopes) {
+			// Append %20 (space)
+			dc.OAuthURL += "%20"
+		}
+	}
+
+}
+
+// The InitOAuthURL() function is used to initialize
+// a discord OAuth URL. This function is called from
+// the Init() function and is only ran if there is
+// no previously provided OAuth URL.
+func (dc *DiscordClient) InitOAuthURL() {
+	if dc.Implicit {
+		dc.implicitOAuth() // implicit.go
+	} else {
+		dc.nonImplicitOAuth() // implicit.go
+	}
+	// If user provided scopes
+	if len(dc.Scopes) > 0 {
+		// Append the scopes to the OAuth URL
+		dc.AppendScopes() // discord_client.go (this file)
 	}
 }
 
