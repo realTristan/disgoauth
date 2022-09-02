@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	// Import DisGOAuth
-	discord "github.com/realTristan/DisGOAuth"
+	discord "github.com/realTristan/disgoauth"
 )
 
 // Main function
