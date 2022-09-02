@@ -31,7 +31,7 @@ func (dc *DiscordClient) RefreshAccessTokenBody(refreshToken string) *bytes.Buff
 
 // The CredentialsAccessTokenBody() function is used to return
 // the request body bytes being used in the
-// RefreshAccessToken() http request
+// GetCredentialsAccessToken() http request
 func CredentialsAccessTokenBody(scopes []string) *bytes.Buffer {
 	var _url string = "grant_type=client_credentials&scope="
 	// For each of the scopes
