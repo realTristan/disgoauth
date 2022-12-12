@@ -8,7 +8,7 @@ import (
 // Request Client for sending http requests
 var RequestClient *http.Client = &http.Client{}
 
-// The DiscordClient struct contains five primary keys
+// The Client struct contains five primary keys
 /* ClientID: 	string 	 { "Your Application's Client ID (REQUIRED)" } */
 /* ClientSecret: 	string 	 { "Your Application's Client Secret (REQUIRED)" } */
 /* Scopes: 	[]string { "Your Application's Permission Scopes (REQUIRED)" } */
@@ -35,22 +35,22 @@ func (dc *Client) checkStructErrors() {
 	// Make sure the user has provided
 	// a valid client id
 	if len(dc.ClientID) < 1 {
-		panic("DisGOAuth Error: invalid ClientID in DiscordClient (ClientID: string)")
+		panic("DisGOAuth Error: invalid ClientID in Client (ClientID: string)")
 	}
 	// Make sure the user has provided
 	// a valid client secret
 	if len(dc.ClientSecret) < 1 {
-		panic("DisGOAuth Error: invalid ClientSecret in DiscordClient (ClientSecret: string)")
+		panic("DisGOAuth Error: invalid ClientSecret in Client (ClientSecret: string)")
 	}
 	// Make sure the user has provided
 	// a valid redirect uri
 	if len(dc.RedirectURI) < 1 {
-		panic("DisGOAuth Error: invalid RedirectURI in DiscordClient (RedirectURI: string)")
+		panic("DisGOAuth Error: invalid RedirectURI in Client (RedirectURI: string)")
 	}
 	// Make sure the user has provided
 	// a sufficient number of scopes
 	if len(dc.Scopes) < 1 {
-		panic("DisGOAuth Error: not enough scopes in DiscordClient (Scopes: []string)")
+		panic("DisGOAuth Error: not enough scopes in Client (Scopes: []string)")
 	}
 }
 
@@ -103,9 +103,9 @@ func (dc *Client) initOAuthURL() string {
 // The Init() function is used to initalize
 // the required data for the discord oauth to work
 // It panics if required parameters are missing from
-// the provided DiscordClient struct
-func Init(dc *Client) *DiscordClient {
-	// Check for DiscordClient struct errors
+// the provided Client struct
+func Init(dc *Client) *Client {
+	// Check for Client struct errors
 	dc.checkStructErrors() // discord_client.go (this file)
 
 	// Initialize the OAuth URL

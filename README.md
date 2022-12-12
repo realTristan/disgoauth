@@ -28,7 +28,7 @@ import (
 // Main function
 func main() {
 	// Establish a new discord client
-	var dc *disgoauth.DiscordClient = discord.Init(&disgoauth.Client{
+	var dc *disgoauth.Client = disgoauth.Init(&disgoauth.Client{
 		ClientID:     "CLIENT ID",
 		ClientSecret: "CLIENT SECRET",
 		RedirectURI:  "http://localhost:8000/redirect",

@@ -6,17 +6,17 @@ import (
 	"net/http"
 
 	// Import DisGOAuth
-	discord "github.com/realTristan/disgoauth"
+	disgoauth "github.com/realTristan/disgoauth"
 )
 
 // Main function
 func main() {
 	// Establish a new discord client
-	var dc *discord.DiscordClient = discord.Init(&discord.DiscordClient{
+	var dc *disgoauth.Client = disgoauth.Init(&disgoauth.Client{
 		ClientID:     "883006609280864257",
 		ClientSecret: "X-9n0rEBywVu1KKKOQSHskRQM7L8UlOV",
 		RedirectURI:  "http://localhost:8000/redirect",
-		Scopes:       []string{discord.ScopeIdentify},
+		Scopes:       []string{disgoauth.ScopeIdentify},
 	})
 
 	////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,7 @@ func main() {
 			accessToken, _ = dc.GetOnlyAccessToken(codeFromURLParamaters)
 
 			// Get the authorized user's data using the above accessToken
-			userData, _ = discord.GetUserData(accessToken)
+			userData, _ = disgoauth.GetUserData(accessToken)
 		)
 		// Print the user data map
 		fmt.Fprint(w, userData)
