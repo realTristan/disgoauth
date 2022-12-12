@@ -17,7 +17,7 @@ var RequestClient *http.Client = &http.Client{}
 /* Implicit: 	bool 	 { "Whether to Use Discord's Implicit Endpoint For Getting Access Token" } */
 /* RedirectURI: 	string 	 { "The Redirect URI (This is where you use the GetUserData functions) (REQUIRED)" } */
 /* OAuthURL: 	string 	 { "Your Application's OAuth URL (If none is provided, one will be generated for you)" } */
-type DiscordClient struct {
+type Client struct {
 	ClientID           string
 	ClientSecret       string
 	RedirectURI        string
@@ -31,7 +31,7 @@ type DiscordClient struct {
 // The checkStructErrors() function is used to check for
 // any invalid / empty struct values that are required
 // for the discord oauth to work.
-func (dc *DiscordClient) checkStructErrors() {
+func (dc *Client) checkStructErrors() {
 	// Make sure the user has provided
 	// a valid client id
 	if len(dc.ClientID) < 1 {
@@ -61,7 +61,7 @@ func (dc *DiscordClient) checkStructErrors() {
 //
 // Using append() and a byte slice is much faster than
 // using += to a string!
-func (dc *DiscordClient) appendScopes(url []byte) string {
+func (dc *Client) appendScopes(url []byte) string {
 	// Append the initial parameter name (scope)
 	url = append(url, "&scope="...)
 
@@ -84,7 +84,7 @@ func (dc *DiscordClient) appendScopes(url []byte) string {
 // a discord OAuth URL. This function is called from
 // the Init() function and is only ran if there is
 // no previously provided OAuth URL.
-func (dc *DiscordClient) initOAuthURL() string {
+func (dc *Client) initOAuthURL() string {
 	// Non Implicit OAuth
 	var tempUrl string = dc.nonImplicitOAuth() // implicit.go
 
@@ -104,7 +104,7 @@ func (dc *DiscordClient) initOAuthURL() string {
 // the required data for the discord oauth to work
 // It panics if required parameters are missing from
 // the provided DiscordClient struct
-func Init(dc *DiscordClient) *DiscordClient {
+func Init(dc *Client) *DiscordClient {
 	// Check for DiscordClient struct errors
 	dc.checkStructErrors() // discord_client.go (this file)
 
