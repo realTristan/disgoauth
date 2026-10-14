@@ -28,8 +28,11 @@ func GetUserData(token string) (map[string]interface{}, error) {
 	resp, err := RequestClient.Do(req)
 
 	// Handle the error
-	// If the response status isn't a success
-	if resp.StatusCode != 200 || err != nil {
+	// If there is an error or the response status isn't a success
+	if err != nil || resp.StatusCode != 200 {
+		if err != nil {
+			return map[string]interface{}{}, err
+		}
 		// Read the http body
 		body, _err := io.ReadAll(resp.Body)
 
